@@ -1,3 +1,4 @@
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +15,8 @@ SECRET_KEY = "khoa_bi_mat_cua_xa_thanh_an"
 ALGORITHM = "HS256"
 
 app = FastAPI(title="Hệ thống Chuyển đổi số Xã Thạnh An")
+
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 @app.get("/", response_class=HTMLResponse)
 def read_root():
     with open("frontend/index.html", "r", encoding="utf-8") as f:
