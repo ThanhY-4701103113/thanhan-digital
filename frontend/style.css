@@ -1,0 +1,11 @@
+/* frontend/style.css */
+body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.hero-section { background: linear-gradient(135deg, #0d6efd, #0dcaf0); color: white; padding: 60px 0; border-radius: 0 0 20px 20px; }
+.service-card { transition: transform 0.3s; cursor: pointer; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.service-card:hover { transform: translateY(-5px); }
+.icon-lg { font-size: 2.5rem; color: #0d6efd; margin-bottom: 15px; }
+.chatbot-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: #198754; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000;}
+.admin-sidebar { background-color: #343a40; min-height: 100vh; color: white; padding-top: 20px; }
+.admin-sidebar a { color: #adb5bd; text-decoration: none; display: block; padding: 10px 20px; margin-bottom: 5px; border-radius: 5px; }
+.admin-sidebar a:hover, .admin-sidebar a.active { background-color: #0d6efd; color: white; }
+.kpi-card { border-left: 5px solid #0d6efd; }

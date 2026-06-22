@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển đổi số Xã Thạnh An</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .service-card { padding: 15px !important; cursor: pointer; transition: transform 0.2s; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+        .icon-md { font-size: 2rem; margin-bottom: 10px; }
+        .service-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; }
+        .service-desc { font-size: 0.75rem; color: #6c757d; }
+        
+        /* Chỉnh style cho Menu ngang */
+        .citizen-nav .nav-link { color: #495057; border-radius: 8px; font-weight: bold; transition: all 0.3s; }
+        .citizen-nav .nav-link.active { background-color: #0d6efd; color: white; box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3); }
+        .citizen-nav .nav-link:hover:not(.active) { background-color: #e9ecef; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-dark text-white text-center p-2">
+        <strong>CHẾ ĐỘ XEM DEMO:</strong> 
+        <button class="btn btn-sm btn-primary ms-3" onclick="showPortal('citizen')">Cổng Người Dân</button>
+        <button class="btn btn-sm btn-warning ms-2" onclick="kiemTraDangNhap()">Giao Diện Cán Bộ</button>
+    </div>
+
+    <div id="citizen-portal" style="display: block;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary" href="#"><i class="fa-solid fa-anchor"></i> XÃ ĐẢO THẠNH AN</a>
+                <button class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-user"></i> Công dân đăng nhập</button>
+            </div>
+        </nav>
+
+        <div class="hero-section text-center shadow-sm py-5 bg-light border-bottom">
+            <div class="container">
+                <h2 class="fw-bold mb-3">Xin chào! Chính quyền có thể giúp gì cho bạn?</h2>
+                <p class="mb-4 text-muted">Tra cứu thủ tục, dịch vụ y tế, giáo dục và tiện ích xã đảo Thạnh An</p>
+    
+                <div class="input-group mx-auto shadow-sm" style="max-width: 600px; border-radius: 10px; overflow: hidden;">
+                    <input type="text" id="input_tracuu" class="form-control form-control-lg border-0" placeholder="Nhập mã hồ sơ (VD: TA-104)...">
+                    <button class="btn btn-warning px-4 fw-bold" type="button" onclick="traCuuHoSo()"><i class="fa-solid fa-magnifying-glass"></i> TÌM KIẾM</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4 mb-5">
+            <ul class="nav nav-pills nav-fill citizen-nav bg-white shadow-sm p-2 rounded-3 border mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" id="btn-hanh-chinh" onclick="chuyenTrangNguoiDan('hanh-chinh')">
+                        <i class="fa-solid fa-building-columns"></i> Hành Chính
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btn-kinh-te" onclick="chuyenTrangNguoiDan('kinh-te')">
+                        <i class="fa-solid fa-store"></i> Kinh Tế Số
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btn-y-te" onclick="chuyenTrangNguoiDan('y-te')">
+                        <i class="fa-solid fa-heart-pulse"></i> Y Tế & Giáo Dục
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btn-ha-tang" onclick="chuyenTrangNguoiDan('ha-tang')">
+                        <i class="fa-solid fa-wifi"></i> Hạ Tầng Số
+                    </button>
+                </li>
+            </ul>
+
+            <div id="box-hanh-chinh" class="box-chuc-nang">
+                <h5 class="text-primary fw-bold border-bottom pb-2"><i class="fa-solid fa-building-columns"></i> Chính Quyền Số & Hành Chính</h5>
+                <div class="row g-3 mt-1">
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalDichVuHoSo()">
+                            <i class="fa-solid fa-file-signature text-primary icon-md"></i>
+                            <div class="service-title">Nộp & Tra cứu Hồ sơ</div>
+                            <div class="service-desc">Kiểm tra kết quả & nộp trực tuyến</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalHuongDan()">
+                            <i class="fa-solid fa-circle-info text-info icon-md"></i>
+                            <div class="service-title">Hướng dẫn Thủ tục</div>
+                            <div class="service-desc">Quy trình, giấy tờ hành chính</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalPhanAnh()">
+                            <i class="fa-solid fa-bullhorn text-danger icon-md"></i>
+                            <div class="service-title">Gửi Phản ánh</div>
+                            <div class="service-desc">Kiến nghị sự cố, an ninh</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalHopThu()">
+                            <i class="fa-solid fa-envelope-open-text text-success icon-md"></i>
+                            <div class="service-title">Hộp thư Phản hồi</div>
+                            <div class="service-desc">Kết quả xử lý từ chính quyền</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="box-kinh-te" class="box-chuc-nang d-none">
+                <h5 class="text-warning fw-bold border-bottom pb-2"><i class="fa-solid fa-store"></i> Kinh Tế Số & Du Lịch Địa Phương</h5>
+                <div class="row g-3 mt-1">
+                    <div class="col-6 col-md-4">
+                        <div class="card service-card h-100 text-center" onclick="moModalGianHang()">
+                            <i class="fa-solid fa-basket-shopping text-warning icon-md"></i>
+                            <div class="service-title">Gian hàng Đặc sản</div>
+                            <div class="service-desc">Mua bán hải sản, muối Thạnh An</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="card service-card h-100 text-center" onclick="moModalDuLich()">
+                            <i class="fa-solid fa-map-location-dot text-success icon-md"></i>
+                            <div class="service-title">Du lịch & Homestay</div>
+                            <div class="service-desc">Thông tin văn hóa, lưu trú cộng đồng</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="card service-card h-100 text-center" onclick="moModalThanhToanChung()">
+                            <i class="fa-solid fa-qrcode text-dark icon-md"></i>
+                            <div class="service-title">Thanh toán Số</div>
+                            <div class="service-desc">Quét mã QR, không dùng tiền mặt</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="box-y-te" class="box-chuc-nang d-none">
+                <h5 class="text-danger fw-bold border-bottom pb-2"><i class="fa-solid fa-heart-pulse"></i> Y Tế & Giáo Dục Thông Minh</h5>
+                <div class="row g-3 mt-1">
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalYTe('kham')">
+                            <i class="fa-solid fa-user-doctor text-primary icon-md"></i>
+                            <div class="service-title">Khám bệnh Từ xa</div>
+                            <div class="service-desc">Tư vấn y tế trực tuyến</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalYTe('hoso')">
+                            <i class="fa-solid fa-notes-medical text-danger icon-md"></i>
+                            <div class="service-title">Hồ sơ Sức khỏe</div>
+                            <div class="service-desc">Quản lý y bạ điện tử gia đình</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalGiaoDuc('solienlac')">
+                            <i class="fa-solid fa-graduation-cap text-success icon-md"></i>
+                            <div class="service-title">Sổ liên lạc Điện tử</div>
+                            <div class="service-desc">Theo dõi học tập của học sinh</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card service-card h-100 text-center" onclick="moModalGiaoDuc('hoclieu')">
+                            <i class="fa-solid fa-book-open-reader text-info icon-md"></i>
+                            <div class="service-title">Học liệu Trực tuyến</div>
+                            <div class="service-desc">Tài liệu và lớp học số</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="box-ha-tang" class="box-chuc-nang d-none">
+                <h5 class="text-info fw-bold border-bottom pb-2"><i class="fa-solid fa-wifi"></i> Hạ Tầng & Tiện Ích Cộng Đồng</h5>
+                <div class="row g-3 mt-1">
+                    <div class="col-6 col-md-6">
+                        <div class="card service-card h-100 text-center" onclick="moModalWifi()">
+                            <i class="fa-solid fa-network-wired text-secondary icon-md"></i>
+                            <div class="service-title">Điểm phát WiFi Công cộng</div>
+                            <div class="service-desc">Bản đồ kết nối Internet miễn phí toàn xã</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <div class="card service-card h-100 text-center" onclick="moModalAI()">
+                            <i class="fa-solid fa-robot text-primary icon-md"></i>
+                            <div class="service-title">Trợ lý ảo AI</div>
+                            <div class="service-desc">Hỗ trợ giải đáp thông tin tự động 24/7</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning mt-5 shadow-sm border-warning border-start border-4">
+                <h6 class="fw-bold"><i class="fa-solid fa-triangle-exclamation"></i> THÔNG BÁO TỪ UBND XÃ:</h6>
+                <ul class="mb-0">
+                    <li><strong>[15/06/2025]</strong> Cảnh báo thời tiết vùng biển Cần Giờ cấp độ 6. Tạm dừng các chuyến phà kết nối đất liền.</li>
+                    <li><strong>[14/06/2025]</strong> Lịch kết nối tư vấn khám bệnh trực tuyến toàn diện với bác sĩ chuyên khoa tuyến trên.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="chatbot-btn" title="Trợ lý ảo AI hỗ trợ 24/7">
+            <i class="fa-solid fa-robot"></i>
+        </div>
+    </div>
+
+    <div id="admin-portal" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 admin-sidebar d-none d-md-block" style="min-height: 100vh; background-color: #2c3e50;">
+                    <h5 class="text-center text-white mb-4 fw-bold mt-3"><i class="fa-solid fa-shield-halved"></i> QUẢN TRỊ</h5>
+                    
+                    <a href="#" id="side-tongquan" class="side-link active d-block text-white p-3 text-decoration-none border-bottom border-secondary" onclick="bamSidebar('tongquan', 'hoso')">
+                        <i class="fa-solid fa-chart-pie me-2"></i> Tổng quan
+                    </a>
+                    
+                    <a href="#" id="side-hoso" class="side-link d-block text-white-50 p-3 text-decoration-none" onclick="bamSidebar('hoso', 'hoso')">
+                        <i class="fa-solid fa-folder-open me-2"></i> Xử lý Hồ sơ
+                    </a>
+                    
+                    <a href="#" id="side-phananh" class="side-link d-block text-white-50 p-3 text-decoration-none" onclick="bamSidebar('phananh', 'phananh')">
+                        <i class="fa-solid fa-bullhorn me-2"></i> Quản lý Phản ánh
+                    </a>
+                    
+                    <a href="#" id="side-donhang" class="side-link d-block text-white-50 p-3 text-decoration-none" onclick="bamSidebar('donhang', 'donhang')">
+                        <i class="fa-solid fa-cart-flatbed me-2"></i> Đơn hàng Kinh tế
+                    </a>
+                    
+                    <a href="#" id="side-ytegiao" class="side-link d-block text-white-50 p-3 text-decoration-none" onclick="bamSidebar('ytegiao', 'ytegiao')">
+                        <i class="fa-solid fa-laptop-medical me-2"></i> Y Tế & Giáo Dục
+                    </a>
+                    
+                    <a href="#" id="side-hatang" class="side-link d-block text-white-50 p-3 text-decoration-none" onclick="bamSidebar('hatang', 'hatang')">
+                        <i class="fa-solid fa-network-wired me-2"></i> Hạ tầng số
+                    </a>
+                </div>
+
+                <div class="col-md-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                        <div class="input-group" style="max-width: 400px;">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm chéo bằng Knowledge Graph...">
+                            <button class="btn btn-outline-secondary"><i class="fa-solid fa-search"></i></button>
+                        </div>
+                        <div>
+                            <span class="me-3"><i class="fa-solid fa-bell text-warning"></i> (3) Nhắc việc</span>
+                            <strong><i class="fa-solid fa-user-tie"></i> Cán bộ: <span id="ten-can-bo" class="text-primary"></span></strong>
+                            <button class="btn btn-sm btn-outline-danger ms-3 fw-bold" onclick="dangXuat()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+                        </div>
+                    </div>
+
+                    
+                    <ul class="nav nav-tabs mb-3" id="adminTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button id="btn-tab-hoso" class="nav-link active fw-bold text-primary" type="button" onclick="chuyenTabAdmin('hoso')">
+                                <i class="fa-solid fa-folder-open"></i> XỬ LÝ HỒ SƠ
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button id="btn-tab-phananh" class="nav-link fw-bold text-secondary" type="button" onclick="chuyenTabAdmin('phananh')">
+                                <i class="fa-solid fa-bullhorn"></i> QUẢN LÝ PHẢN ÁNH
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button id="btn-tab-donhang" class="nav-link fw-bold text-secondary" type="button" onclick="chuyenTabAdmin('donhang')">
+                                <i class="fa-solid fa-cart-flatbed"></i> ĐƠN HÀNG KINH TẾ
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button id="btn-tab-ytegiao" class="nav-link fw-bold text-secondary" type="button" onclick="chuyenTabAdmin('ytegiao')">
+                                <i class="fa-solid fa-laptop-medical"></i> Y TẾ & GIÁO DỤC
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button id="btn-tab-hatang" class="nav-link fw-bold text-secondary" type="button" onclick="chuyenTabAdmin('hatang')">
+                                <i class="fa-solid fa-network-wired"></i> HẠ TẦNG SỐ
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="adminTabsContent">
+                        <div class="tab-pane fade show active" id="hoso-pane">
+                            <h4 class="mb-4 fw-bold text-secondary">TÌNH HÌNH TIẾP NHẬN HỒ SƠ TOÀN XÃ</h4>
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <div class="card p-3 kpi-card shadow-sm border-warning" style="border-left: 5px solid #ffc107 !important;">
+                                        <h6 class="text-muted">Đang chờ duyệt</h6>
+                                        <h3 class="fw-bold mb-0 text-warning" id="kpi-cho-duyet">0</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card p-3 kpi-card shadow-sm border-primary" style="border-left: 5px solid #0d6efd !important;">
+                                        <h6 class="text-muted">Đang xử lý</h6>
+                                        <h3 class="fw-bold mb-0 text-primary" id="kpi-dang-xuly">0</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card p-3 kpi-card shadow-sm border-success" style="border-left: 5px solid #198754 !important;">
+                                        <h6 class="text-muted">Đã hoàn thành</h6>
+                                        <h3 class="fw-bold mb-0 text-success" id="kpi-hoan-thanh">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-sm border-0 border-primary">
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0 text-center align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Mã HS</th>
+                                                <th>Ngày nộp</th> <th class="text-start">Người nộp</th>
+                                                <th>Lĩnh vực</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bang-ho-so"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade d-none" id="phananh-pane">
+                            <div class="card shadow-sm border-0 border-danger">
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-danger">
+                                            <tr>
+                                                <th>Mã PA</th><th>Người gửi</th><th>Nội dung</th><th>Trạng thái</th><th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bang-phan-anh-admin"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade d-none" id="donhang-pane">
+                            <div class="card shadow-sm border-0 border-success">
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0 text-center align-middle">
+                                        <thead class="table-success">
+                                            <tr>
+                                                <th>Mã Đơn</th>
+                                                <th class="text-start">Thông tin Khách</th>
+                                                <th>Sản phẩm / Dịch vụ</th>
+                                                <th>Thanh toán</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bang-don-hang"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade d-none" id="ytegiao-pane">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card shadow-sm border-0 border-danger h-100">
+                                        <div class="card-header bg-danger text-white fw-bold"><i class="fa-solid fa-user-doctor"></i> Quản lý Lịch Khám Từ Xa</div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-hover mb-0 text-center align-middle" style="font-size: 0.9rem;">
+                                                <thead class="table-light">
+                                                    <tr><th>Bệnh nhân</th><th>Triệu chứng</th><th>Trạng thái</th><th>Hành động</th></tr>
+                                                </thead>
+                                                <tbody id="bang-lich-kham-admin">
+                                                    <tr>
+                                                        <td class="text-start"><strong>Nguyễn Văn C</strong><br><small class="text-muted">ID: 060203000427</small></td>
+                                                        <td class="text-danger fw-bold">Sốt cao, ho nhiều</td>
+                                                        <td><span class="badge bg-warning text-dark border border-warning trang-thai-kham">Chờ bác sĩ</span></td>
+                                                        <td><button class="btn btn-sm btn-danger fw-bold shadow-sm" onclick="nhanCaKham(this)"><i class="fa-solid fa-video"></i> Nhận ca</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="card shadow-sm border-0 border-info h-100">
+                                        <div class="card-header bg-info text-dark fw-bold"><i class="fa-solid fa-book-open-reader"></i> Quản lý Kho Học Liệu Số</div>
+                                        <div class="card-body p-3">
+                                            
+                                            <div class="mb-3 p-3 border border-info rounded bg-light shadow-sm">
+                                                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-cloud-arrow-up text-info"></i> Đăng tải bài giảng mới</h6>
+                                                <input type="text" id="hl_ten" class="form-control border-info mb-2" placeholder="Tên bài giảng (VD: Ôn tập Toán 9)...">
+                                                <div class="input-group mb-3">
+                                                    <select id="hl_mon" class="form-select border-info" style="max-width: 140px; font-weight: bold;">
+                                                        <option value="Phổ thông">Phổ thông</option>
+                                                        <option value="STEM">STEM</option>
+                                                        <option value="Ngoại ngữ">Ngoại ngữ</option>
+                                                        <option value="Công nghệ">Công nghệ</option>
+                                                    </select>
+                                                    <input type="text" id="hl_link" class="form-control border-info" placeholder="Link YouTube / Google Drive...">
+                                                </div>
+                                                <button class="btn btn-info w-100 fw-bold shadow-sm" onclick="xuatBanBaiGiang()">
+                                                    <i class="fa-solid fa-upload"></i> XUẤT BẢN BÀI GIẢNG
+                                                </button>
+                                            </div>
+
+                                            <table class="table table-hover mb-0 text-center align-middle" style="font-size: 0.9rem;">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th class="text-start">Tên bài giảng đang phát</th>
+                                                        <th>Phân loại</th>
+                                                        <th>Tùy chỉnh</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bang-hoc-lieu-admin">
+                                                    <tr>
+                                                        <td class="text-start fw-bold text-primary">Toán 9: Đại số & Hình học</td>
+                                                        <td><span class="badge bg-danger">Phổ thông</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary me-1" title="Chỉnh sửa"><i class="fa-solid fa-pen"></i></button>
+                                                            <button class="btn btn-sm btn-outline-danger" title="Gỡ bài" onclick="xoaBaiGiang(this)"><i class="fa-solid fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-start fw-bold text-primary">Dự án Robot BirdAI (Scratch)</td>
+                                                        <td><span class="badge bg-warning text-dark">STEM</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary me-1" title="Chỉnh sửa"><i class="fa-solid fa-pen"></i></button>
+                                                            <button class="btn btn-sm btn-outline-danger" title="Gỡ bài" onclick="xoaBaiGiang(this)"><i class="fa-solid fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-start fw-bold text-primary">Machine Learning & AI</td>
+                                                        <td><span class="badge bg-info text-dark">Công nghệ</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary me-1" title="Chỉnh sửa"><i class="fa-solid fa-pen"></i></button>
+                                                            <button class="btn btn-sm btn-outline-danger" title="Gỡ bài" onclick="xoaBaiGiang(this)"><i class="fa-solid fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade d-none" id="hatang-pane">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card shadow-sm border-0 border-secondary h-100">
+                                        <div class="card-header bg-secondary text-white fw-bold"><i class="fa-solid fa-wifi"></i> Quản lý Trạm phát Wi-Fi Cộng đồng</div>
+                                        <div class="card-body p-3">
+                                            
+                                            <div class="mb-3 p-3 border border-secondary rounded bg-light shadow-sm">
+                                                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-satellite-dish text-secondary"></i> Khai báo trạm phát mới</h6>
+                                                <input type="text" id="wf_ten" class="form-control border-secondary mb-2" placeholder="Tên trạm (VD: AP-04: Chợ Thạnh An)...">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" id="wf_ip" class="form-control border-secondary" placeholder="Địa chỉ IP (VD: 192.168.1.5)...">
+                                                    <input type="text" id="wf_vitri" class="form-control border-secondary" placeholder="Vị trí lắp đặt...">
+                                                </div>
+                                                <button class="btn btn-secondary w-100 fw-bold shadow-sm" onclick="themTramWiFi()">
+                                                    <i class="fa-solid fa-plus"></i> THÊM TRẠM VÀO BẢN ĐỒ
+                                                </button>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-hover mb-0 text-center align-middle" style="font-size: 0.9rem;">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th class="text-start">Thông tin Trạm (AP)</th>
+                                                            <th>Trạng thái</th>
+                                                            <th>Tùy chỉnh</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bang-wifi-admin">
+                                                        </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card shadow-sm border-0 border-dark h-100">
+                                        <div class="card-header bg-dark text-white fw-bold"><i class="fa-solid fa-microchip"></i> Quản trị Lõi Trợ Lý Ảo AI</div>
+                                        <div class="card-body p-3">
+                                            <div class="alert alert-success border-success py-2 mb-3">
+                                                <i class="fa-solid fa-check-circle"></i> Trạng thái API: <strong>Hoạt động bình thường</strong> (Độ trễ: 120ms)
+                                            </div>
+                                            
+                                            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-database text-primary"></i> Huấn luyện thêm tri thức (Knowledge Graph)</h6>
+                                            <div class="mb-3">
+                                                <textarea id="ai_data_input" class="form-control border-dark" rows="3" placeholder="Nhập quy định mới, thông báo khẩn hoặc dữ liệu địa phương để AI tự động học hỏi..."></textarea>
+                                            </div>
+                                            <button id="btn_train_ai" class="btn btn-dark w-100 fw-bold shadow-sm mb-4" onclick="capNhatTriThucAI()">
+                                                <i class="fa-solid fa-brain"></i> HUẤN LUYỆN NGAY
+                                            </button>
+
+                                            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-chart-line text-warning"></i> Thống kê tương tác (Tuần này)</h6>
+                                            <div class="row text-center">
+                                                <div class="col-6">
+                                                    <div class="p-2 border rounded bg-light">
+                                                        <h4 class="fw-bold text-primary mb-0">1,245</h4>
+                                                        <small class="text-muted">Câu hỏi được giải đáp</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="p-2 border rounded bg-light">
+                                                        <h4 class="fw-bold text-success mb-0">98%</h4>
+                                                        <small class="text-muted">Độ chính xác (NLU)</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-lock"></i> Đăng nhập Cán bộ</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModal()"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Tên tài khoản</label>
+                        <input type="text" id="username" class="form-control" placeholder="Nhập: admin">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted">Mật khẩu</label>
+                        <input type="password" id="password" class="form-control" placeholder="Nhập: 123456">
+                    </div>
+                    <p id="login-error" class="text-danger fw-bold text-center" style="display: none;"><i class="fa-solid fa-circle-xmark"></i> Sai tài khoản hoặc mật khẩu!</p>
+                    <button type="button" class="btn btn-primary w-100 fw-bold py-2" onclick="thucHienDangNhap()">ĐĂNG NHẬP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="dichvuHoSoModal" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-success text-white pb-0 border-0 d-flex flex-column align-items-stretch">
+                    <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                        <h5 class="modal-title fw-bold"><i class="fa-solid fa-folder-open"></i> Phân Hệ Dịch Vụ Công Mức Độ 4</h5>
+                        <button type="button" class="btn-close btn-close-white" onclick="dongModalDichVuHoSo()"></button>
+                    </div>
+                    <ul class="nav nav-tabs border-0 w-100 flex-nowrap" role="tablist">
+                        <li class="nav-item flex-fill text-center">
+                            <button class="nav-link active fw-bold text-white w-100 py-2 border-0 bg-transparent" id="tab-nop-tab" onclick="switchTab('nop')" style="border-bottom: 3px solid white !important; border-radius: 0;">
+                                <i class="fa-solid fa-file-import"></i> NỘP HỒ SƠ MỚI
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill text-center">
+                            <button class="nav-link fw-bold text-white-50 w-100 py-2 border-0 bg-transparent" id="tab-tra-tab" onclick="switchTab('tra')" style="border-radius: 0;">
+                                <i class="fa-solid fa-magnifying-glass"></i> TRA CỨU NHANH
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="modal-body bg-light">
+                    <div class="tab-pane fade show active" id="tab-nop">
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-success border-bottom pb-2 mb-3">1. THÔNG TIN NGƯỜI NỘP</h6>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold text-muted">Họ và tên <span class="text-danger">*</span></label>
+                                        <input type="text" id="ten_nguoi_nop" class="form-control" placeholder="Nhập họ tên...">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold text-muted">Số CCCD <span class="text-danger">*</span></label>
+                                        <input type="text" id="cccd_nguoi_nop" class="form-control" placeholder="12 số CCCD...">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold text-muted">Số điện thoại <span class="text-danger">*</span></label>
+                                        <input type="text" id="sdt_nguoi_nop" class="form-control" placeholder="Nhận SMS...">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label fw-bold text-muted">Địa chỉ cư trú / Nơi nhận kết quả <span class="text-danger">*</span></label>
+                                        <input type="text" id="dia_chi_nguoi_nop" class="form-control" placeholder="Ví dụ: Tổ 2, Ấp Thạnh Bình, Xã Thạnh An...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">2. THÔNG TIN HỒ SƠ & TÀI LIỆU</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold text-muted">Dịch vụ / Thủ tục <span class="text-danger">*</span></label>
+                                        <select id="linh_vuc_nop" class="form-select border-primary" onchange="kiemTraLePhi()">
+                                            <option value="">-- Chọn thủ tục --</option>
+                                            <option value="Hộ tịch">Đăng ký Khai sinh / Khai tử (Miễn phí)</option>
+                                            <option value="Chứng thực">Chứng thực bản sao, chữ ký (10.000đ)</option>
+                                            <option value="Đất đai">Đăng ký biến động Đất đai (50.000đ)</option>
+                                            <option value="Y tế">Đăng ký thẻ BHYT Hộ gia đình (Miễn phí)</option>
+                                            <option value="Kinh doanh">Đăng ký hộ kinh doanh cá thể (100.000đ)</option>
+                                            <option value="An ninh">Đăng ký tạm trú / thường trú (15.000đ)</option>
+                                        </select>
+                                        <div id="thong_tin_tiep_nhan" class="mt-2 text-primary" style="font-size: 0.85rem; display: none;">
+                                            <i class="fa-solid fa-location-dot"></i> <strong>Nơi tiếp nhận:</strong> <span id="txt_noi_tiep_nhan"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold text-muted">Tải File Đính kèm (PDF, JPG) <span class="text-danger">*</span></label>
+                                        <input type="file" id="file_dinh_kem" class="form-control border-primary">
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold text-muted">Nội dung chi tiết (Không bắt buộc)</label>
+                                    <textarea id="chi_tiet_nop" class="form-control" rows="2" placeholder="Ghi chú thêm cho cán bộ..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="khu_vuc_thanh_toan" class="card border-0 shadow-sm mb-4 d-none" style="background-color: #fff3cd;">
+                            <div class="card-body text-center">
+                                <h6 class="fw-bold text-danger"><i class="fa-solid fa-qrcode"></i> THANH TOÁN LỆ PHÍ: <span id="so_tien_phi" class="fs-5">0 VNĐ</span></h6>
+                                <img id="img_qr_thanh_toan" src="" class="img-thumbnail border-warning mb-2 mt-2" alt="QR Code" style="width: 150px; height: 150px;">
+                                <p class="mb-3 text-muted" style="font-size: 0.85rem;">Sử dụng App Ngân hàng quét mã. Sau khi chuyển khoản thành công, vui lòng bấm xác nhận bên dưới.</p>
+                                <div id="khu_vuc_xac_nhan">
+                                    <button type="button" class="btn btn-warning fw-bold btn-sm px-4 shadow-sm" onclick="xacNhanThanhToan()">
+                                        <i class="fa-solid fa-money-bill-transfer"></i> TÔI ĐÃ CHUYỂN KHOẢN
+                                    </button>
+                                </div>
+                                <div id="thong_bao_thanh_toan_ok" class="text-success fw-bold mt-2" style="display: none; font-size: 1.1rem;">
+                                    <i class="fa-solid fa-circle-check fs-4"></i> HỆ THỐNG ĐÃ GHI NHẬN THANH TOÁN!
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-success w-100 fw-bold py-3 fs-5 shadow" onclick="thucHienNopHoSo()"><i class="fa-solid fa-cloud-arrow-up"></i> NỘP HỒ SƠ & BIÊN NHẬN</button>
+                    </div>
+
+                    <div class="tab-pane fade d-none" id="tab-tra">
+                        <div class="mb-4 mt-2">
+                            <label class="form-label fw-bold text-muted">Nhập mã số hồ sơ của bạn <span class="text-danger">*</span></label>
+                            <div class="input-group shadow-sm">
+                                <input type="text" id="modal_input_tracuu" class="form-control text-center fw-bold text-primary fs-5 border-warning" placeholder="Ví dụ: TA-12345">
+                                <button class="btn btn-warning fw-bold px-4" type="button" onclick="traCuuHoSoTuModal()"><i class="fa-solid fa-search"></i> TÌM KIẾM</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="thanhcongModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-5 border-0 shadow-lg" style="border-radius: 15px;">
+                <div class="modal-body p-0">
+                    <i class="fa-solid fa-circle-check text-success" style="font-size: 5rem; margin-bottom: 20px;"></i>
+                    <h3 class="fw-bold text-success mb-3">Nộp Hồ Sơ Thành Công!</h3>
+                    <p class="text-muted mb-2">Mã tra cứu của bạn là:</p>
+                    <h1 class="fw-bold text-primary p-3 rounded" style="background-color: #e9ecef; letter-spacing: 2px;" id="ma_ho_so_moi">TA-XXX</h1>
+                    <p class="text-danger mt-3 mb-4" style="font-size: 0.9rem;"><i class="fa-solid fa-triangle-exclamation"></i> Vui lòng chụp màn hình hoặc ghi lại mã này để tra cứu!</p>
+                    <button class="btn btn-primary w-100 fw-bold py-2" onclick="dongModalThanhCong()">ĐÃ LƯU MÃ - ĐÓNG</button>
+                    <p class="text-success mt-3 fw-bold mb-0" style="font-size: 0.9rem;"><i class="fa-solid fa-comment-sms"></i> Hệ thống đã gửi tin nhắn biên nhận về SĐT: <span id="sms_sdt" class="text-danger"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="ketquaModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-magnifying-glass"></i> Kết quả Tra cứu</h5>
+                    <button type="button" class="btn-close" onclick="dongModalKetQua()"></button>
+                </div>
+                <div class="modal-body bg-light" id="ket_qua_content">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="huongdanModal" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-info text-dark">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-circle-info"></i> Cẩm nang Thủ tục Hành chính</h5>
+                    <button type="button" class="btn-close" onclick="dongModalHuongDan()"></button>
+                </div>
+                <div class="modal-body p-0 bg-light">
+                    <div class="accordion accordion-flush" id="accordionHuongDan">
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button fw-bold text-primary bg-primary bg-opacity-10" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa-solid fa-baby me-2"></i> 1. Đăng ký Khai sinh
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionHuongDan">
+                                <div class="accordion-body bg-white">
+                                    <p class="mb-2"><strong><i class="fa-solid fa-file-contract text-secondary"></i> Yêu cầu hồ sơ:</strong> Giấy chứng sinh của bệnh viện/trạm y tế, CCCD của cha mẹ, Giấy chứng nhận kết hôn (nếu có).</p>
+                                    <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success"></i> Lệ phí:</strong> Miễn phí.</p>
+                                    <p class="mb-3"><strong><i class="fa-solid fa-clock text-warning"></i> Thời gian giải quyết:</strong> Xử lý ngay trong ngày làm việc.</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center p-2 mt-3" style="background-color: #f1f8ff; border: 1px dashed #0d6efd; border-radius: 6px;">
+                                        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.85rem;" title="Tải biểu mẫu điền sẵn">
+                                            <i class="fa-solid fa-download"></i> Mẫu TK04-Khai sinh.docx
+                                        </a>
+                                        <button class="btn btn-sm btn-primary fw-bold shadow-sm" onclick="chuyenSangNopHoSo('Hộ tịch')">
+                                            <i class="fa-solid fa-paper-plane"></i> NỘP HỒ SƠ NGAY
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fa-solid fa-rings-wedding me-2"></i> 2. Đăng ký Kết hôn
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionHuongDan">
+                                <div class="accordion-body bg-white">
+                                    <p class="mb-2"><strong><i class="fa-solid fa-file-contract text-secondary"></i> Yêu cầu hồ sơ:</strong> Tờ khai đăng ký kết hôn, CCCD của 2 bên, Giấy xác nhận tình trạng hôn nhân (nếu làm khác xã).</p>
+                                    <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success"></i> Lệ phí:</strong> Miễn phí.</p>
+                                    <p class="mb-3"><strong><i class="fa-solid fa-clock text-warning"></i> Thời gian giải quyết:</strong> Xử lý ngay trong ngày làm việc.</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center p-2 mt-3" style="background-color: #f1f8ff; border: 1px dashed #0d6efd; border-radius: 6px;">
+                                        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.85rem;" title="Tải biểu mẫu điền sẵn">
+                                            <i class="fa-solid fa-download"></i> Mẫu TK04-KetHon.docx
+                                        </a>
+                                        <button class="btn btn-sm btn-primary fw-bold shadow-sm" onclick="chuyenSangNopHoSo('Hộ tịch')">
+                                            <i class="fa-solid fa-paper-plane"></i> NỘP HỒ SƠ NGAY
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="fa-solid fa-book-journal-whills me-2"></i> 3. Đăng ký Khai tử
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionHuongDan">
+                                <div class="accordion-body bg-white">
+                                    <p class="mb-2"><strong><i class="fa-solid fa-file-contract text-secondary"></i> Yêu cầu hồ sơ:</strong> Tờ khai đăng ký khai tử, Giấy báo tử của Bệnh viện/Trạm y tế, CCCD người đi khai.</p>
+                                    <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success"></i> Lệ phí:</strong> Miễn phí.</p>
+                                    <p class="mb-3"><strong><i class="fa-solid fa-clock text-warning"></i> Thời gian giải quyết:</strong> Xử lý ngay trong ngày làm việc.</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center p-2 mt-3" style="background-color: #f1f8ff; border: 1px dashed #0d6efd; border-radius: 6px;">
+                                        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.85rem;">
+                                            <i class="fa-solid fa-download"></i> Mẫu TK04-KhaiTu.docx
+                                        </a>
+                                        <button class="btn btn-sm btn-primary fw-bold shadow-sm" onclick="chuyenSangNopHoSo('Hộ tịch')">
+                                            <i class="fa-solid fa-paper-plane"></i> NỘP HỒ SƠ NGAY
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    <i class="fa-solid fa-stamp me-2"></i> 4. Chứng thực bản sao, chữ ký
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionHuongDan">
+                                <div class="accordion-body bg-white">
+                                    <p class="mb-2"><strong><i class="fa-solid fa-file-contract text-secondary"></i> Yêu cầu hồ sơ:</strong> Bản chính để đối chiếu và Bản sao cần chứng thực.</p>
+                                    <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success"></i> Lệ phí:</strong> 10.000 VNĐ / Bản.</p>
+                                    <p class="mb-3"><strong><i class="fa-solid fa-clock text-warning"></i> Thời gian giải quyết:</strong> Trả kết quả ngay.</p>
+                                    
+                                    <div class="d-flex justify-content-end align-items-center p-2 mt-3" style="background-color: #f1f8ff; border: 1px dashed #0d6efd; border-radius: 6px;">
+                                        <button class="btn btn-sm btn-primary fw-bold shadow-sm" onclick="chuyenSangNopHoSo('Chứng thực')">
+                                            <i class="fa-solid fa-paper-plane"></i> ĐẶT LỊCH CHỨNG THỰC
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    <i class="fa-solid fa-notes-medical me-2"></i> 5. Cấp thẻ BHYT Hộ gia đình
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionHuongDan">
+                                <div class="accordion-body bg-white">
+                                    <p class="mb-2"><strong><i class="fa-solid fa-file-contract text-secondary"></i> Yêu cầu hồ sơ:</strong> Tờ khai tham gia BHYT (Mẫu TK1-TS), CCCD gắn chip.</p>
+                                    <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success"></i> Lệ phí:</strong> Theo quy định hiện hành.</p>
+                                    <p class="mb-3"><strong><i class="fa-solid fa-clock text-warning"></i> Thời gian giải quyết:</strong> 5 ngày làm việc.</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center p-2 mt-3" style="background-color: #f1f8ff; border: 1px dashed #0d6efd; border-radius: 6px;">
+                                        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.85rem;">
+                                            <i class="fa-solid fa-download"></i> Mẫu TK1-TS_BHYT.docx
+                                        </a>
+                                        <button class="btn btn-sm btn-primary fw-bold shadow-sm" onclick="chuyenSangNopHoSo('Y tế')">
+                                            <i class="fa-solid fa-paper-plane"></i> NỘP HỒ SƠ NGAY
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSix">
+                                <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    <i class="fa-solid fa-user-check me-2"></i> 6. Xác nhận tình trạng hôn nhân
+                                </button>
+                            </h2>
+                            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionHuongDan">
+                                <div class="accordion-body bg-white">
+                                    <p class="mb-2"><strong><i class="fa-solid fa-file-contract text-secondary"></i> Yêu cầu hồ sơ:</strong> Tờ khai cấp Giấy xác nhận tình trạng hôn nhân, Bản sao CCCD.</p>
+                                    <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success"></i> Lệ phí:</strong> 15.000 VNĐ.</p>
+                                    <p class="mb-3"><strong><i class="fa-solid fa-clock text-warning"></i> Thời gian giải quyết:</strong> 3 ngày làm việc.</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center p-2 mt-3" style="background-color: #f1f8ff; border: 1px dashed #0d6efd; border-radius: 6px;">
+                                        <a href="#" class="text-decoration-none text-primary" style="font-size: 0.85rem;">
+                                            <i class="fa-solid fa-download"></i> Mẫu XNTTHN.docx
+                                        </a>
+                                        <button class="btn btn-sm btn-primary fw-bold shadow-sm" onclick="chuyenSangNopHoSo('Hộ tịch')">
+                                            <i class="fa-solid fa-paper-plane"></i> NỘP HỒ SƠ NGAY
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="phananhModal" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-bullhorn"></i> Gửi Phản Ánh / Kiến Nghị</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalPhanAnh()"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <input type="text" id="pa_nguoi_gui" class="form-control mb-3 border-danger" placeholder="Họ và tên người phản ánh">
+                    <input type="text" id="pa_sdt" class="form-control mb-3" placeholder="Số điện thoại liên hệ">
+                    
+                    <select id="pa_loai" class="form-select mb-3 text-primary fw-bold">
+                        <option value="Hạ tầng">Hạ tầng (Đường hỏng, Đèn tắt, Rác thải)</option>
+                        <option value="An ninh">An ninh (Ồn ào, Trộm cắp, Tệ nạn)</option>
+                        <option value="Hành chính">Thái độ cán bộ, Thủ tục rườm rà</option>
+                    </select>
+                    
+                    <input type="text" id="pa_diadiem" class="form-control mb-3" placeholder="📍 Địa điểm (VD: Cột điện số 5, Ấp Thạnh Hòa)...">
+                    <textarea id="pa_noidung" class="form-control mb-3" rows="3" placeholder="Mô tả chi tiết sự việc..."></textarea>
+                    
+                    <div class="mb-4">
+                        <label class="form-label text-muted fw-bold" style="font-size: 0.85rem;"><i class="fa-solid fa-camera"></i> Hình ảnh minh chứng (Tùy chọn):</label>
+                        <input type="file" id="pa_hinhanh" class="form-control" accept="image/*">
+                    </div>
+                    
+                    <button type="button" class="btn btn-danger w-100 fw-bold py-2 shadow-sm" onclick="thucHienGuiPhanAnh()">
+                        <i class="fa-solid fa-paper-plane"></i> GỬI CHÍNH QUYỀN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="hopthuModal" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-envelope-open-text"></i> Bảng Tin Tiếp Nhận Phản Ánh</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalHopThu()"></button>
+                </div>
+                <div class="modal-body bg-light" id="danh_sach_phan_anh">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="chiTietHoSoModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-lines"></i> CHI TIẾT HỒ SƠ: <span id="admin_detail_mahs" class="text-warning"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalChiTietHoSo()"></button>
+                </div>
+                <div class="modal-body bg-light" id="admin_detail_content">
+                </div>
+                <div class="modal-footer justify-content-between bg-white border-top-0">
+                    <div class="w-50">
+                        <label class="fw-bold text-muted mb-1" style="font-size: 0.85rem;">Cập nhật trạng thái:</label>
+                        <select id="admin_select_trangthai" class="form-select border-primary fw-bold text-primary" onchange="checkLyDo()">
+                            <option value="Chờ duyệt">Chờ duyệt</option>
+                            <option value="Đang xử lý">Đang xử lý</option>
+                            <option value="Yêu cầu bổ sung">Yêu cầu bổ sung hồ sơ</option>
+                            <option value="Từ chối">Từ chối cấp phép</option>
+                            <option value="Đã hoàn thành">Đã hoàn thành</option>
+                        </select>
+                        <textarea id="admin_lydo" class="form-control mt-2 d-none border-warning" rows="2" placeholder="Nhập phản hồi cho người dân..."></textarea>
+                    </div>
+                    <button class="btn btn-success fw-bold px-4" onclick="luuTrangThaiHoSo()"><i class="fa-solid fa-floppy-disk"></i> LƯU & XÁC NHẬN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalTraLoiPhanAnh" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-reply"></i> XỬ LÝ PHẢN ÁNH: <span id="admin_pa_ma" class="text-warning"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalTraLoiPhanAnh()"></button>
+                </div>
+                <div class="modal-body bg-light" id="admin_pa_content">
+                </div>
+                <div class="modal-footer bg-white d-block border-top-0">
+                    <label class="fw-bold text-muted mb-2"><i class="fa-solid fa-pen-to-square"></i> Nội dung UBND xã phản hồi:</label>
+                    <textarea id="admin_pa_traloi" class="form-control mb-3 border-danger" rows="3" placeholder="Nhập phản hồi chính thức cho người dân..."></textarea>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-secondary me-2 fw-bold" onclick="dongModalTraLoiPhanAnh()">HỦY</button>
+                        <button class="btn btn-danger fw-bold px-4 shadow-sm" onclick="thucHienTraLoiPhanAnh()">
+                            <i class="fa-solid fa-paper-plane"></i> GỬI PHẢN HỒI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalXemAnh" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-transparent border-0">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" onclick="dongModalAnh()"></button>
+                <img id="anh_can_xem" src="" class="img-fluid" style="max-height: 80vh; object-fit: contain;">
+            </div>
+        </div>
+    </div> 
+    <div class="modal" id="gianHangModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-store"></i> Chợ Đặc Sản Xã Đảo Thạnh An</h5>
+                    <button type="button" class="btn-close" onclick="dongModalGianHang()"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="alert alert-success border-success border-start border-4 shadow-sm mb-4">
+                        <i class="fa-solid fa-leaf"></i> <strong>Sản phẩm OCOP địa phương:</strong> Đảm bảo vệ sinh an toàn thực phẩm, trực tiếp từ ngư dân đến tay người tiêu dùng!
+                    </div>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-3">
+                                <div class="card-body text-center">
+                                    <i class="fa-solid fa-fish text-primary" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                    <h6 class="fw-bold text-dark">Khô cá dứa một nắng</h6>
+                                    <p class="text-danger fw-bold mb-2">250.000 đ / kg</p>
+                                    <p class="text-muted" style="font-size: 0.8rem;">Đặc sản đánh bắt tự nhiên, phơi chuẩn một nắng, hút chân không sạch sẽ.</p>
+                                    <button class="btn btn-sm btn-outline-danger w-100 fw-bold" onclick="datMuaSanPham('Khô cá dứa', 250000)">
+                                        <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-3">
+                                <div class="card-body text-center">
+                                    <i class="fa-solid fa-bowl-rice text-secondary" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                    <h6 class="fw-bold text-dark">Muối hầm Thạnh An</h6>
+                                    <p class="text-danger fw-bold mb-2">35.000 đ / hũ</p>
+                                    <p class="text-muted" style="font-size: 0.8rem;">Muối hầm truyền thống, giàu khoáng chất tự nhiên, tốt cho sức khỏe.</p>
+                                    <button class="btn btn-sm btn-outline-danger w-100 fw-bold" onclick="datMuaSanPham('Muối hầm', 35000)">
+                                        <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-3">
+                                <div class="card-body text-center">
+                                    <i class="fa-solid fa-jar text-warning" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                    <h6 class="fw-bold text-dark">Mắm ruốc chà</h6>
+                                    <p class="text-danger fw-bold mb-2">60.000 đ / hũ 500g</p>
+                                    <p class="text-muted" style="font-size: 0.8rem;">Làm từ ruốc tươi, ủ theo phương pháp gia truyền, thơm ngon đậm vị.</p>
+                                    <button class="btn btn-sm btn-outline-danger w-100 fw-bold" onclick="datMuaSanPham('Mắm ruốc chà', 60000)">
+                                        <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-3">
+                                <div class="card-body text-center">
+                                    <i class="fa-solid fa-oyster text-info" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                    <h6 class="fw-bold text-dark">Hàu sữa tách vỏ</h6>
+                                    <p class="text-danger fw-bold mb-2">120.000 đ / kg</p>
+                                    <p class="text-muted" style="font-size: 0.8rem;">Hàu tươi nuôi tại lồng bè Thạnh An, tách vỏ đóng khay cấp đông.</p>
+                                    <button class="btn btn-sm btn-outline-danger w-100 fw-bold" onclick="datMuaSanPham('Hàu sữa', 120000)">
+                                        <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="duLichModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-map-location-dot"></i> Cẩm nang Du lịch & Homestay Thạnh An</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalDuLich()"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    
+                    <h6 class="fw-bold text-success border-bottom pb-2 mb-3"><i class="fa-solid fa-bed"></i> Đặt phòng Homestay Cộng đồng</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-3">
+                                <div class="card-body text-center">
+                                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-house-chimney text-warning"></i> Homestay Chú Năm</h6>
+                                    
+                                    <div class="mb-2">
+                                        <span class="badge bg-light text-primary border border-primary"><i class="fa-solid fa-location-dot"></i> Tổ 2, Ấp Thạnh Hòa</span>
+                                    </div>
+
+                                    <p class="text-danger fw-bold mb-1">300.000 đ / đêm</p>
+                                    <p class="text-muted" style="font-size: 0.85rem;">View sát biển, bao gồm ăn sáng. Hỗ trợ mượn bếp nướng hải sản ngoài trời.</p>
+                                    <button class="btn btn-sm btn-success w-100 fw-bold mt-auto" onclick="datPhong('Homestay Chú Năm', 300000)">
+                                        <i class="fa-solid fa-calendar-check"></i> ĐẶT PHÒNG
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-3">
+                                <div class="card-body text-center">
+                                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-house-chimney text-info"></i> Homestay Biển Gọi</h6>
+                                    
+                                    <div class="mb-2">
+                                        <span class="badge bg-light text-primary border border-primary"><i class="fa-solid fa-location-dot"></i> Khu chợ, Ấp Thạnh Bình</span>
+                                    </div>
+
+                                    <p class="text-danger fw-bold mb-1">250.000 đ / đêm</p>
+                                    <p class="text-muted" style="font-size: 0.85rem;">Ngay trung tâm ấp, gần chợ hải sản. Rộng rãi, thích hợp cho gia đình, nhóm bạn.</p>
+                                    <button class="btn btn-sm btn-success w-100 fw-bold mt-auto" onclick="datPhong('Homestay Biển Gọi', 250000)">
+                                        <i class="fa-solid fa-calendar-check"></i> ĐẶT PHÒNG
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-info border-bottom pb-2 mb-3"><i class="fa-solid fa-camera"></i> Điểm check-in không thể bỏ lỡ</h6>
+                    <ul class="list-group shadow-sm border-0">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 mb-1 rounded">
+                            <div><strong class="text-dark">Lăng Ông Thủy Tướng</strong><br><small class="text-muted">Di tích văn hóa tâm linh, nơi tổ chức lễ hội Nghinh Ông truyền thống.</small></div>
+                            <span class="badge bg-primary rounded-pill"><i class="fa-solid fa-map-pin"></i> Ấp Thạnh Hòa</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 mb-1 rounded">
+                            <div><strong class="text-dark">Bờ kè đá Thạnh An</strong><br><small class="text-muted">Con đường đá chắn sóng trải dài, điểm ngắm bình minh và hoàng hôn đẹp nhất.</small></div>
+                            <span class="badge bg-primary rounded-pill"><i class="fa-solid fa-map-pin"></i> Quanh đảo</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 rounded">
+                            <div><strong class="text-dark">Rừng ngập mặn ven đảo</strong><br><small class="text-muted">Thuê đò của ngư dân đi len lỏi tham quan hệ sinh thái rừng ngập mặn nguyên sơ.</small></div>
+                            <span class="badge bg-primary rounded-pill"><i class="fa-solid fa-map-pin"></i> Ven đảo</span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="xacNhanDonModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-clipboard-check"></i> Xác nhận Thông tin</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalXacNhanDon()"></button>
+                </div>
+                <div class="modal-body bg-light p-4">
+                    <div class="alert alert-info py-2 mb-4">
+                        <strong id="don_ten_dich_vu" class="text-primary">Đang đặt: ...</strong><br>
+                        <span class="text-danger fw-bold" id="don_gia_tien">Giá: 0 VNĐ</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Họ và Tên người đặt <span class="text-danger">*</span></label>
+                        <input type="text" id="don_ten" class="form-control border-primary" placeholder="Nhập tên của bạn...">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Số điện thoại liên hệ <span class="text-danger">*</span></label>
+                        <input type="text" id="don_sdt" class="form-control border-primary" placeholder="Để người bán/chủ nhà gọi xác nhận...">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted">Địa chỉ nhận hàng / Ghi chú <span class="text-danger">*</span></label>
+                        <textarea id="don_diachi" class="form-control border-primary" rows="2" placeholder="Nhập địa chỉ giao hàng (nếu mua hàng) hoặc ghi chú thêm (nếu đặt phòng)..."></textarea>
+                    </div>
+
+                    <label class="form-label fw-bold text-muted mb-2">Phương thức thanh toán:</label>
+                    <select id="don_phuong_thuc" class="form-select border-warning fw-bold mb-4">
+                        <option value="TienMat">💵 Tiền mặt (Khi nhận hàng / Đến nơi trả)</option>
+                        <option value="QR">📱 Quét mã QR (Thanh toán số ngay)</option>
+                    </select>
+
+                    <button type="button" class="btn btn-primary w-100 fw-bold py-2 shadow-sm" onclick="tienHanhDatDon()">
+                        <i class="fa-solid fa-paper-plane"></i> GỬI YÊU CẦU
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="thanhToanChungModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-qrcode"></i> Thanh Toán / Nộp Phí Chung</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalThanhToanChung()"></button>
+                </div>
+                <div class="modal-body bg-light p-4">
+                    <div class="alert alert-secondary py-2 mb-4 text-center">
+                        <small>Sử dụng để đóng lệ phí hành chính, phí môi trường, quyên góp hoặc thanh toán các dịch vụ tự do khác tại xã.</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Số Căn cước công dân <span class="text-danger">*</span></label>
+                        <input type="text" id="ttc_cccd" class="form-control border-dark" placeholder="Nhập 12 số CCCD để đối soát...">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Loại khoản thu / Lệ phí <span class="text-danger">*</span></label>
+                        <select id="ttc_loaiphi" class="form-select border-dark fw-bold text-primary">
+                            <option value="">-- Chọn khoản cần nộp --</option>
+                            <option value="Lệ phí Hành chính">Lệ phí giải quyết thủ tục Hành chính</option>
+                            <option value="Phí Vệ sinh môi trường">Phí Vệ sinh thu gom rác thải</option>
+                            <option value="Đóng góp Quỹ Xã hội">Đóng góp Quỹ Xã hội / Vì người nghèo</option>
+                            <option value="Khoản thu khác">Thanh toán khoản thu khác</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted">Số tiền cần thanh toán (VNĐ) <span class="text-danger">*</span></label>
+                        <input type="number" id="ttc_sotien" class="form-control border-dark fs-5 text-danger fw-bold" placeholder="VD: 50000">
+                    </div>
+                    
+                    <button type="button" class="btn btn-dark w-100 fw-bold py-2 shadow-sm" onclick="taoMaQRThanhToan()">
+                        <i class="fa-solid fa-qrcode"></i> TẠO MÃ QR THANH TOÁN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="thanhToanModal" tabindex="-1" style="background-color: rgba(0,0,0,0.7);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-qrcode"></i> Cổng Thanh Toán Số</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalThanhToan()"></button>
+                </div>
+                <div class="modal-body bg-light text-center p-4">
+                    <h6 class="text-primary fw-bold mb-3" id="tt_ten_dich_vu">Dịch vụ: ...</h6>
+                    
+                    <div class="p-3 bg-white border border-2 border-danger rounded-3 shadow-sm mb-4">
+                        <p class="text-muted mb-1 fw-bold">SỐ TIỀN CẦN THANH TOÁN:</p>
+                        <h2 class="text-danger fw-bold mb-0" id="tt_so_tien">0 VNĐ</h2>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <img id="tt_qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=ChuyenDoiSoThanhAn" class="img-thumbnail p-2 shadow-sm" style="width: 200px; height: 200px; border-radius: 10px;">
+                    </div>
+                    
+                    <p class="text-muted small mb-4 px-3"><i class="fa-solid fa-mobile-screen-button"></i> Mở ứng dụng Ngân hàng (Mobile Banking) hoặc Ví điện tử (MoMo, ZaloPay) để quét mã QR bên trên.</p>
+                    
+                    <button type="button" class="btn btn-success w-100 fw-bold py-3 fs-5 shadow" onclick="xacNhanHoanTatThanhToan()">
+                        <i class="fa-solid fa-circle-check"></i> XÁC NHẬN ĐÃ CHUYỂN KHOẢN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="wifiModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-wifi"></i> Bản đồ Trạm phát Wi-Fi miễn phí</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalWifi()"></button>
+                </div>
+                <div class="modal-body bg-light p-3">
+                    <div class="alert alert-info text-center py-2 mb-3">
+                        <small>Mạng Wi-Fi do UBND Xã Thạnh An cung cấp phục vụ chuyển đổi số cộng đồng.</small>
+                    </div>
+
+                    <div class="mb-3 rounded-3 overflow-hidden shadow-sm" style="height: 300px; border: 2px solid #0dcaf0;">
+                        <iframe src="https://maps.google.com/maps?q=UBND%20Xã%20Thạnh%20An,%20Cần%20Giờ,%20Hồ%20Chí%20Minh&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-location-crosshairs text-danger"></i> Danh sách các điểm phát sóng:</h6>
+                    <div class="list-group shadow-sm" id="danh_sach_wifi_congdan">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="aiModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-robot"></i> Trợ lý ảo AI Thạnh An</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalAI()"></button>
+                </div>
+                <div class="modal-body p-0" style="background-color: #f4f7f6;">
+                    <div id="ai_chat_box" class="p-3" style="height: 350px; overflow-y: auto;">
+                        <div class="text-start mb-3">
+                            <span class="bg-white text-dark border shadow-sm px-3 py-2 rounded-3 d-inline-block" style="max-width: 85%;">
+                                <strong>🤖 AI Thạnh An:</strong><br>Xin chào! Tôi là trợ lý ảo giải đáp thông tin tự động của xã đảo Thạnh An. Tôi có thể giúp gì cho bạn hôm nay?
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white border-top-0 d-flex p-2">
+                    <input type="text" id="ai_input" class="form-control rounded-pill border-secondary" placeholder="Nhập câu hỏi (VD: thủ tục, wifi)..." onkeypress="xuLyPhimEnter(event)">
+                    <button class="btn btn-primary rounded-circle" style="width: 45px; height: 45px;" onclick="guiTinNhanAI()">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="yteModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white pb-0 border-0 d-flex flex-column align-items-stretch">
+                    <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                        <h5 class="modal-title fw-bold"><i class="fa-solid fa-heart-pulse"></i> Trạm Y Tế Số Thạnh An</h5>
+                        <button type="button" class="btn-close btn-close-white" onclick="dongModalYTe()"></button>
+                    </div>
+                    <ul class="nav nav-tabs border-0 w-100 flex-nowrap" role="tablist">
+                        <li class="nav-item flex-fill text-center">
+                            <button class="nav-link active fw-bold text-white w-100 py-2 border-0 bg-transparent" data-bs-toggle="tab" data-bs-target="#tab-kham" id="nav-kham" style="border-bottom: 3px solid white !important; border-radius: 0;">
+                                <i class="fa-solid fa-video"></i> KHÁM TỪ XA
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill text-center">
+                            <button class="nav-link fw-bold text-white-50 w-100 py-2 border-0 bg-transparent" data-bs-toggle="tab" data-bs-target="#tab-hoso-yte" id="nav-hoso" style="border-radius: 0;">
+                                <i class="fa-solid fa-laptop-medical"></i> HỒ SƠ SỨC KHỎE
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-kham">
+                            
+                            <div id="kham_step1_danhsach">
+                                <div class="alert alert-danger py-2"><small>Hệ thống kết nối trực tuyến với Bác sĩ tuyến trên phục vụ bà con xã đảo.</small></div>
+                                <div class="card shadow-sm border-0 mb-3">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" width="50" class="me-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">BS.CKI Nguyễn Văn A</h6>
+                                                <small class="text-muted">Khoa Nội Tổng quát - <span class="text-success fw-bold"><i class="fa-solid fa-circle text-success" style="font-size: 8px;"></i> Đang Online</span></small>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-success btn-sm fw-bold px-3 shadow-sm" onclick="moFormKham()"><i class="fa-solid fa-video"></i> GỌI NGAY</button>
+                                    </div>
+                                </div>
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/3774/3774221.png" width="50" class="me-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">BS. Trần Thị B</h6>
+                                                <small class="text-muted">Khoa Nhi - Lịch trống: 14h00 hôm nay</small>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline-primary btn-sm fw-bold px-3" onclick="alert('Đã đặt lịch khám lúc 14h00 thành công. Hệ thống sẽ nhắc nhở trước 15 phút!')"><i class="fa-solid fa-calendar-plus"></i> ĐẶT LỊCH</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="kham_step2_thongtin" class="d-none">
+                                <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-clipboard-user"></i> Phiếu đăng ký khám tư vấn</h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold">Người bệnh / Số thẻ BHYT <span class="text-danger">*</span></label>
+                                    <input type="text" id="kham_ten" class="form-control border-primary" placeholder="Ví dụ: Nguyễn Văn C (TE179...)">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label text-muted fw-bold">Mô tả triệu chứng hiện tại <span class="text-danger">*</span></label>
+                                    <textarea id="kham_trieuchung" class="form-control border-primary" rows="3" placeholder="Ví dụ: Bé bị sốt cao từ tối hôm qua, ho nhiều..."></textarea>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-secondary fw-bold px-4" onclick="huyFormKham()">HỦY LỆNH</button>
+                                    <button class="btn btn-danger fw-bold px-4 shadow" onclick="vaoPhongKham()"><i class="fa-solid fa-phone-volume"></i> KẾT NỐI BÁC SĨ</button>
+                                </div>
+                            </div>
+
+                            <div id="kham_step3_videocall" class="d-none text-center">
+                                <h6 id="kham_trangthai_call" class="text-danger fw-bold mb-2">Đang kết nối hệ thống...</h6>
+                                
+                                <div class="position-relative bg-dark rounded-3 overflow-hidden shadow-sm" style="height: 350px; width: 100%;">
+                                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop" class="w-100 h-100 object-fit-cover opacity-50" id="video_bacsi">
+                                    
+                                    <div class="position-absolute bottom-0 end-0 m-3 border border-3 border-white rounded shadow-lg overflow-hidden bg-dark" style="width: 110px; height: 150px;">
+                                        <video id="video_benhnhan" class="w-100 h-100 object-fit-cover" autoplay muted playsinline style="transform: scaleX(-1);"></video>
+                                    </div>
+                                    
+                                    <div id="video_overlay" class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark text-white" style="z-index: 5;">
+                                        <div class="text-center">
+                                            <div class="spinner-border text-danger mb-2" role="status" style="width: 3rem; height: 3rem;"></div>
+                                            <p class="fw-bold m-0 text-white-50">Đang chờ bác sĩ chấp nhận...</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 d-flex justify-content-center gap-3">
+                                    <button class="btn btn-secondary rounded-circle" style="width: 45px; height: 45px;" title="Tắt micro"><i class="fa-solid fa-microphone"></i></button>
+                                    <button class="btn btn-danger rounded-pill px-4 fw-bold shadow" onclick="ketThucCuocGoi()"><i class="fa-solid fa-phone-slash"></i> KẾT THÚC</button>
+                                    <button class="btn btn-secondary rounded-circle" style="width: 45px; height: 45px;" title="Tắt camera"><i class="fa-solid fa-video"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-hoso-yte">
+                            <label class="form-label fw-bold text-muted">Tra cứu Y bạ điện tử bằng CCCD</label>
+                            <div class="input-group shadow-sm mb-3">
+                                <input type="text" id="kham_input_cccd" class="form-control text-center fw-bold text-danger border-danger" placeholder="Nhập CCCD (VD: 079...)">
+                                <button class="btn btn-danger fw-bold px-4" type="button" onclick="traCuuHoSoYTe()"><i class="fa-solid fa-search"></i> TRA CỨU</button>
+                            </div>
+
+                            <div id="kham_ketqua_tracuu" class="d-none mt-4">
+                                <h6 class="fw-bold text-success border-bottom pb-2 mb-3"><i class="fa-solid fa-notes-medical"></i> Sổ Khám Bệnh Điện Tử</h6>
+                                
+                                <div class="card border-0 shadow-sm mb-3 bg-white border-start border-success border-4">
+                                    <div class="card-body py-2">
+                                        <div class="row" style="font-size: 0.9rem;">
+                                            <div class="col-md-6 mb-1"><strong>Họ và tên:</strong> <span class="text-primary fw-bold" id="kq_ten_bn">...</span></div>
+                                            <div class="col-md-6 mb-1"><strong>Mã BHYT:</strong> <span class="text-dark" id="kq_mabhyt">...</span></div>
+                                            <div class="col-md-6 mb-1"><strong>Nhóm máu:</strong> <span class="text-danger fw-bold" id="kq_nhommau">...</span></div>
+                                            <div class="col-md-6 mb-1"><strong>Dị ứng thuốc:</strong> <span class="text-danger" id="kq_diung">...</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử khám bệnh gần đây:</h6>
+                                <div class="list-group shadow-sm border-0" id="kq_lichsu">
+                                    </div>
+
+                                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử khám bệnh gần đây:</h6>
+                                <div class="list-group shadow-sm border-0">
+                                    <div class="list-group-item border-0 mb-1 rounded bg-white">
+                                        <div class="d-flex justify-content-between w-100">
+                                            <h6 class="mb-1 fw-bold text-primary">Viêm họng cấp / Sốt siêu vi</h6>
+                                            <small class="text-muted fw-bold">15/06/2026</small>
+                                        </div>
+                                        <p class="mb-1 text-muted" style="font-size: 0.85rem;"><strong>Bác sĩ:</strong> BS.CKI Nguyễn Văn A (Khám Video Call từ xa)</p>
+                                        <small class="text-dark"><i class="fa-solid fa-pills text-success"></i> <strong>Đơn thuốc:</strong> Paracetamol 500mg, Vitamin C, Nước súc miệng.</small>
+                                    </div>
+                                    <div class="list-group-item border-0 rounded bg-white mt-1">
+                                        <div class="d-flex justify-content-between w-100">
+                                            <h6 class="mb-1 fw-bold text-primary">Khám sức khỏe định kỳ</h6>
+                                            <small class="text-muted fw-bold">10/01/2026</small>
+                                        </div>
+                                        <p class="mb-1 text-muted" style="font-size: 0.85rem;"><strong>Nơi khám:</strong> Trạm Y Tế Xã Thạnh An</p>
+                                        <small class="text-dark"><i class="fa-solid fa-heart-circle-check text-danger"></i> <strong>Kết luận:</strong> Huyết áp bình thường, sức khỏe ổn định.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="giaoDucModal" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white pb-0 border-0 d-flex flex-column align-items-stretch">
+                    <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                        <h5 class="modal-title fw-bold"><i class="fa-solid fa-graduation-cap"></i> Cổng Giáo Dục Số</h5>
+                        <button type="button" class="btn-close btn-close-white" onclick="dongModalGiaoDuc()"></button>
+                    </div>
+                    <ul class="nav nav-tabs border-0 w-100 flex-nowrap" role="tablist">
+                        <li class="nav-item flex-fill text-center">
+                            <button class="nav-link active fw-bold text-white w-100 py-2 border-0 bg-transparent" data-bs-toggle="tab" data-bs-target="#tab-solienlac" id="nav-solienlac" style="border-bottom: 3px solid white !important; border-radius: 0;">
+                                <i class="fa-solid fa-address-book"></i> SỔ LIÊN LẠC
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill text-center">
+                            <button class="nav-link fw-bold text-white-50 w-100 py-2 border-0 bg-transparent" data-bs-toggle="tab" data-bs-target="#tab-hoclieu" id="nav-hoclieu" style="border-radius: 0;">
+                                <i class="fa-solid fa-book-open-reader"></i> HỌC LIỆU SỐ
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-solienlac">
+                            <label class="form-label fw-bold text-muted">Xem điểm & chuyên cần của học sinh</label>
+                            <div class="input-group shadow-sm mb-3">
+                                <input type="text" id="gd_input_mahs" class="form-control text-center fw-bold border-primary text-primary" placeholder="Nhập mã học sinh (VD: HS-123)...">
+                                <button class="btn btn-primary fw-bold px-4" type="button" onclick="traCuuDiem()"><i class="fa-solid fa-search"></i> XEM ĐIỂM</button>
+                            </div>
+
+                            <div id="gd_ketqua_tracuu" class="d-none mt-4">
+                                <h6 class="fw-bold text-primary border-bottom pb-2 mb-3"><i class="fa-solid fa-clipboard-user"></i> Phiếu Liên Lạc Điện Tử</h6>
+                                
+                                <div class="card border-0 shadow-sm mb-3 bg-white border-start border-primary border-4">
+                                    <div class="card-body py-2">
+                                        <div class="row" style="font-size: 0.9rem;">
+                                            <div class="col-md-6 mb-1"><strong>Học sinh:</strong> <span class="text-primary fw-bold" id="kq_hs_ten">...</span></div>
+                                            <div class="col-md-6 mb-1"><strong>Lớp:</strong> <span class="text-dark fw-bold" id="kq_hs_lop">...</span></div>
+                                            <div class="col-md-6 mb-1"><strong>GVCN:</strong> <span class="text-dark" id="kq_hs_gvcn">...</span></div>
+                                            <div class="col-md-6 mb-1"><strong>Chuyên cần:</strong> <span class="text-danger fw-bold" id="kq_hs_chuyencan">...</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-star text-warning"></i> Bảng điểm Học kỳ I:</h6>
+                                <div class="table-responsive shadow-sm rounded-3">
+                                    <table class="table table-bordered table-striped text-center mb-0" style="font-size: 0.85rem;">
+                                        <thead class="table-primary text-dark align-middle">
+                                            <tr>
+                                                <th>Môn học</th>
+                                                <th>KT Thường xuyên</th>
+                                                <th>Giữa kỳ</th>
+                                                <th>Cuối kỳ</th>
+                                                <th>ĐTB</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="kq_hs_diem">
+                                            </tbody>
+                                    </table>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-hoclieu">
+                            <div id="gd_danhsach_khoahoc">
+                                <div class="alert alert-primary py-2 mb-3"><small><i class="fa-solid fa-bell"></i> Kho bài giảng trực tuyến bám sát chương trình phổ thông mới & Giáo dục STEM.</small></div>
+                                
+                                <div class="row g-3" id="grid_hoclieu_congdan">
+                                    </div>
+                            </div>
+                            
+                            <div id="gd_trinhphat_video" class="d-none">
+                                <button class="btn btn-sm btn-outline-secondary mb-3 fw-bold" onclick="dongBaiGiang()"><i class="fa-solid fa-arrow-left"></i> Quay lại Kho học liệu</button>
+                                <h6 class="fw-bold text-primary mb-2" id="gd_ten_baigiang">Tên bài giảng...</h6>
+                                <div class="ratio ratio-16x9 bg-dark rounded-3 overflow-hidden shadow-sm">
+                                    <iframe id="gd_iframe_video" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
+                                <div class="mt-3 d-flex justify-content-between">
+                                    <span class="badge bg-success"><i class="fa-solid fa-check"></i> Đang học</span>
+                                    <button class="btn btn-sm btn-primary fw-bold" onclick="alert('Đã tải tài liệu PDF đính kèm thành công!')"><i class="fa-solid fa-download"></i> Tải bài tập</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modalDuyetDon" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-box-open"></i> CHI TIẾT ĐƠN HÀNG: <span id="admin_dh_ma" class="text-warning"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalDuyetDon()"></button>
+                </div>
+                <div class="modal-body bg-light" id="admin_dh_content">
+                    </div>
+                <div class="modal-footer justify-content-between bg-white border-top-0">
+                    <button class="btn btn-secondary fw-bold" onclick="dongModalDuyetDon()">ĐÓNG</button>
+                    <button class="btn btn-success fw-bold px-4 shadow-sm" onclick="xacNhanDuyetDon_API()">
+                        <i class="fa-solid fa-check-double"></i> XÁC NHẬN HOÀN THÀNH
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modalSuaWiFi" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen"></i> Chỉnh sửa Trạm Wi-Fi</h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="dongModalSuaWiFi()"></button>
+                </div>
+                <div class="modal-body bg-light p-4">
+                    <input type="hidden" id="edit_wf_id">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Tên trạm</label>
+                        <input type="text" id="edit_wf_ten" class="form-control border-secondary">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">Địa chỉ IP</label>
+                        <input type="text" id="edit_wf_ip" class="form-control border-secondary">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted">Vị trí lắp đặt</label>
+                        <input type="text" id="edit_wf_vitri" class="form-control border-secondary">
+                    </div>
+                    <button type="button" class="btn btn-secondary w-100 fw-bold py-2 shadow-sm" onclick="luuSuaWiFi_API()">
+                        <i class="fa-solid fa-save"></i> LƯU THAY ĐỔI
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app_hanhchinh.js"></script>
+    <script src="app_kinhte.js"></script>
+    <script src="app_ytevagiaoduc.js"></script>
+    <script src="app_hatangso.js"></script>
+    <script>
+        // HÀM CHUYỂN TAB CÔNG DÂN
+        function chuyenTrangNguoiDan(tabId) {
+            document.querySelectorAll('.citizen-nav .nav-link').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + tabId).classList.add('active');
+            document.querySelectorAll('.box-chuc-nang').forEach(box => box.classList.add('d-none'));
+            document.getElementById('box-' + tabId).classList.remove('d-none');
+        }
+
+        // HÀM CHUYỂN TAB ADMIN CHÍNH XÁC 100%
+        function chuyenTabAdmin(tabId) {
+            // 1. Tắt đèn tất cả các nút Menu ngang (Đổi về màu xám)
+            document.querySelectorAll('#adminTabs .nav-link').forEach(btn => {
+                btn.className = "nav-link fw-bold text-secondary";
+            });
+            
+            // 2. Bật đèn nút Menu ngang đang được chọn
+            const activeBtn = document.getElementById('btn-tab-' + tabId);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            if(tabId === 'hoso' && activeBtn) activeBtn.classList.add('text-primary');
+            if(tabId === 'phananh' && activeBtn) activeBtn.classList.add('text-danger');
+            if(tabId === 'donhang' && activeBtn) activeBtn.classList.add('text-success', 'border-success');
+            if(tabId === 'ytegiao' && activeBtn) activeBtn.classList.add('text-info', 'border-info');
+            if(tabId === 'hatang' && activeBtn) activeBtn.classList.add('text-dark', 'border-dark');
+
+            // 3. ẨN TẤT CẢ CÁC BẢNG (Chỗ này lúc nãy thiếu tên 2 tab cuối nè)
+            document.querySelectorAll('#hoso-pane, #phananh-pane, #donhang-pane, #ytegiao-pane, #hatang-pane').forEach(pane => {
+                pane.classList.add('d-none');
+                pane.classList.remove('show', 'active');
+            });
+
+            // 4. HIỆN BẢNG ĐƯỢC CHỌN VÀ GỌI API LẤY DỮ LIỆU
+            document.querySelectorAll('#' + tabId + '-pane').forEach(pane => {
+                pane.classList.remove('d-none');
+                pane.classList.add('show', 'active');
+            });
+
+            if(tabId === 'hoso') {
+                if (typeof layDuLieuTuBackend === "function") layDuLieuTuBackend(); 
+            } 
+            else if(tabId === 'phananh') {
+                if (typeof taiDuLieuPhanAnh_ChongLoi === "function") taiDuLieuPhanAnh_ChongLoi();
+            } 
+            else if(tabId === 'donhang') {
+                if (typeof taiDuLieuDonHang_ChongLoi === "function") taiDuLieuDonHang_ChongLoi();
+            }
+        }
+
+        // HÀM XỬ LÝ KHI BẤM MENU DỌC BÊN TRÁI (SIDEBAR)
+        function bamSidebar(sideId, tabId) {
+            // Tắt đèn tất cả menu dọc
+            document.querySelectorAll('.side-link').forEach(link => {
+                link.classList.remove('active', 'text-white', 'border-bottom', 'border-secondary');
+                link.classList.add('text-white-50');
+            });
+            
+            // Bật đèn sáng cho menu dọc vừa bấm
+            const activeLink = document.getElementById('side-' + sideId);
+            if (activeLink) {
+                activeLink.classList.remove('text-white-50');
+                activeLink.classList.add('active', 'text-white', 'border-bottom', 'border-secondary');
+            }
+
+            // Đồng bộ sang Menu ngang và Nội dung
+            chuyenTabAdmin(tabId);
+        }
+
+        // ==============================================================
+        // TỰ ĐỘNG CHẠY CÁC HÀM NÀY KHI TRANG VỪA TẢI XONG
+        // ==============================================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderKhoHocLieu === "function") renderKhoHocLieu(); 
+            if (typeof renderBangWiFi === "function") renderBangWiFi();
+        });
+
+
+        // --- HÀM TẢI PHẢN ÁNH (TỰ ĐỘNG CHỐNG CRASH) ---
+        async function taiDuLieuPhanAnh_ChongLoi() {
+            try {
+                const res = await fetch('/api/phananh');
+                const data = await res.json();
+                if (data.status === "success") {
+                    // Đổ dữ liệu vào tất cả bảng tìm được
+                    document.querySelectorAll('#bang-phan-anh-admin').forEach(tbody => {
+                        tbody.innerHTML = '';
+                        data.data.forEach(pa => {
+                            let mau_sac = pa.trang_thai === "Đã xử lý" ? "bg-success" : (pa.trang_thai === "Từ chối" ? "bg-danger" : "bg-warning text-dark");
+                            
+                            // Ngăn crash nếu nội dung gửi lên bị rỗng
+                            let noiDung = pa.noi_dung || "Không có nội dung";
+                            let noiDungNgan = noiDung.length > 30 ? noiDung.substring(0, 30) + "..." : noiDung;
+                            
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td class="fw-bold text-danger">${pa.ma_pa}</td>
+                                    <td><strong>${pa.nguoi_gui || "Ẩn danh"}</strong><br><small class="text-muted">${pa.sdt || ''}</small></td>
+                                    <td title="${noiDung}">${noiDungNgan}</td>
+                                    <td><span class="badge ${mau_sac}">${pa.trang_thai}</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger fw-bold shadow-sm" onclick="moModalTraLoiPhanAnh('${pa.ma_pa}')">
+                                            <i class="fa-solid fa-reply"></i> Trả lời
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    });
+                }
+            } catch (e) { console.error("Lỗi Phản ánh:", e); }
+        }
+
+        // --- HÀM TẢI ĐƠN HÀNG (TỰ ĐỘNG CHỐNG CRASH) ---
+        async function taiDuLieuDonHang_ChongLoi() {
+            try {
+                const res = await fetch('/api/donhang');
+                const result = await res.json();
+                if (result.status === "success") {
+                    // Cập nhật biến mảng thật để Modal chi tiết dùng được
+                    if (typeof danhSachDonHangThucTe !== 'undefined') {
+                        danhSachDonHangThucTe = result.data;
+                    }
+                    
+                    document.querySelectorAll('#bang-don-hang').forEach(tbody => {
+                        tbody.innerHTML = '';
+                        result.data.forEach(dh => {
+                            let badgeClass = dh.trang_thai === "Chờ xác nhận" ? "bg-warning text-dark" : "bg-success";
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td class="fw-bold text-success">${dh.ma_dh}</td>
+                                    <td class="text-start"><strong>${dh.ten_khach}</strong><br><small class="text-muted"><i class="fa-solid fa-phone"></i> ${dh.sdt}</small></td>
+                                    <td class="fw-bold text-primary">${dh.ten_dich_vu}</td>
+                                    <td><span class="text-danger fw-bold">${(dh.gia_tien || 0).toLocaleString('vi-VN')} đ</span><br><small class="text-muted">${dh.phuong_thuc_tt === 'QR' ? 'Đã quét QR' : 'Tiền mặt'}</small></td>
+                                    <td><span class="badge ${badgeClass}">${dh.trang_thai}</span></td>
+                                    <td><button class="btn btn-sm btn-success fw-bold shadow-sm" onclick="moModalDuyetDon_API('${dh.ma_dh}')"><i class="fa-solid fa-pen-to-square"></i> Xử lý</button></td>
+                                </tr>
+                            `;
+                        });
+                    });
+                }
+            } catch (e) { console.error("Lỗi Đơn hàng:", e); }
+        }
+        // ==============================================================
+        // --- HÀM TỰ ĐỘNG KHỞI CHẠY KHI TRANG VỪA TẢI XONG ---
+        // ==============================================================
+        document.addEventListener("DOMContentLoaded", function() {
+            // Tự động kéo dữ liệu Kho Học Liệu về và vẽ lên màn hình Công dân
+            if (typeof renderKhoHocLieu === "function") {
+                renderKhoHocLieu(); 
+            }
+        });
+        // --- HÀM XỬ LÝ KHI BẤM MENU DỌC BÊN TRÁI ---
+        function bamSidebar(sideId, tabId) {
+            // 1. Tắt đèn tất cả các menu dọc (đổi về màu xám mờ)
+            document.querySelectorAll('.side-link').forEach(link => {
+                link.classList.remove('active', 'text-white', 'border-bottom', 'border-secondary');
+                link.classList.add('text-white-50');
+            });
+            
+            // 2. Bật đèn sáng cho menu vừa bấm
+            const activeLink = document.getElementById('side-' + sideId);
+            if (activeLink) {
+                activeLink.classList.remove('text-white-50');
+                activeLink.classList.add('active', 'text-white', 'border-bottom', 'border-secondary');
+            }
+
+            // 3. Ra lệnh chuyển tab ở màn hình chính và tải dữ liệu tương ứng
+            chuyenTabAdmin(tabId);
+        }
+    </script>
+</body>
+</html>
