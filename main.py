@@ -16,7 +16,7 @@ ALGORITHM = "HS256"
 app = FastAPI(title="Hệ thống Chuyển đổi số Xã Thạnh An")
 @app.get("/", response_class=HTMLResponse)
 def read_root():
-    with open(r"D:\Dự án\Xã Đảo\ThanhAn_Digital\frontend\index.html", "r", encoding="utf-8") as f:
+    with open("frontend/index.html", "r", encoding="utf-8") as f:
         return f.read()
 
 app.add_middleware(
